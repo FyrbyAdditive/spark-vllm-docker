@@ -1,0 +1,56 @@
+# Recipe: Step-3.7-Flash-NVFP4 (throughput variant — no MTP)
+#
+# Use this instead of step-3.7-flash-jasl-gb10 if your workload is many concurrent
+# users (C >= 8) where MTP's TTFT cost outweighs its per-token speed gain.
+# At C=8 throughput is roughly equal; at low C, the canonical (MTP) recipe is
+# faster per-token.
+#
+# This recipe = stock eugr step-3.7-flash-nvfp4 + R1 throughput tunings.
+
+recipe_version: "1"
+name: Step-3.7-Flash-NVFP4-jasl-GB10-throughput
+description: Step-3.7-Flash-NVFP4 throughput variant (no MTP) for high-concurrency workloads
+
+# HuggingFace model to download (optional, for --download-model)
+model: stepfun-ai/Step-3.7-Flash-NVFP4
+
+# Container image to use
+container: vllm-node
+
+# Can only be run in a cluster
+cluster_only: true
+
+# No mods required
+mods:
+  - mods/step-3.7-flash
+
+# Default settings (can be overridden via CLI)
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.8
+  max_model_len: 262144
+  max_num_seqs: 8
+  max_num_batched_tokens: 4176
+
+# Environment variables
+env: {}
+
+# The vLLM serve command template
+command: |
+  vllm serve stepfun-ai/Step-3.7-Flash-NVFP4 \
+      --trust-remote-code \
+      --port {port} \
+      --host {host} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      -tp {tensor_parallel} \
+      --distributed-executor-backend ray \
+      --max-model-len {max_model_len} \
+      --enable-auto-tool-choice \
+      --reasoning-parser step3p5 \
+      --tool-call-parser step3p5 \
+      --load-format instanttensor \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --served-model-name step-3.7-flash stepfun-ai/Step-3.7-Flash-NVFP4

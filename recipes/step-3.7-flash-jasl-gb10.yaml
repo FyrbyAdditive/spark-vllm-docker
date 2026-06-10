@@ -1,0 +1,59 @@
+# Recipe: Step-3.7-Flash-NVFP4 on 2x DGX Spark (GB10 / sm_121) with MTP
+#
+# Canonical Spark recipe: stepfun-ai/Step-3.7-Flash-NVFP4 + MTP-3 speculative
+# decoding + R1 throughput tunings (max_num_seqs cap, raised batched-tokens
+# budget, served-name alias). MTP gives +14-17% single-stream tok/s + ~50%
+# draft acceptance on real prompts (Spec-Bench).
+#
+# Setup prerequisites:
+#  - Pull the eugr vllm-node image (this recipe runs on the stock image)
+#  - On each Spark: ./hf-download.sh stepfun-ai/Step-3.7-Flash-NVFP4 -c
+#  - Stepfun's recent NVFP4 export now ships the BF16 MTP shard
+#    (model-mtp-bf16.safetensors), so the graft script from eugr PR #268 is a
+#    no-op against current snapshots. If you have an older snapshot without
+#    MTP weights, run ./graft-step-3.7-mtp.sh first.
+#
+# Run with: ./run-recipe.sh step-3.7-flash-jasl-gb10 --no-ray
+
+recipe_version: "1"
+name: Step-3.7-Flash-NVFP4-jasl-GB10
+description: vLLM serving Step-3.7-Flash-NVFP4 on two GB10 DGX Sparks with MTP speculative decoding
+
+model: stepfun-ai/Step-3.7-Flash-NVFP4
+container: vllm-node
+cluster_only: true
+
+mods:
+  - mods/step-3.7-flash
+  - mods/step-3.7-flash-mtp-unquant
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.8
+  max_model_len: 262144
+  num_speculative_tokens: 3      # Step-3.7-Flash has 3 MTP heads; PR #268 found 3 fastest on GB10
+  max_num_seqs: 8                # explicit cap; raises KV pool size vs vLLM default
+  max_num_batched_tokens: 8192   # spec-decode draft slots need >>2048 (vllm.py:1601 warning)
+
+env: {}
+
+# {{ }} escape literal braces for str.format(); {num_speculative_tokens} is templated.
+command: |
+  vllm serve stepfun-ai/Step-3.7-Flash-NVFP4 \
+      --trust-remote-code \
+      --port {port} \
+      --host {host} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      -tp {tensor_parallel} \
+      --distributed-executor-backend ray \
+      --max-model-len {max_model_len} \
+      --enable-auto-tool-choice \
+      --reasoning-parser step3p5 \
+      --tool-call-parser step3p5 \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --speculative-config '{{"method": "mtp", "num_speculative_tokens": {num_speculative_tokens}}}' \
+      --served-model-name step-3.7-flash stepfun-ai/Step-3.7-Flash-NVFP4 \
+      --load-format instanttensor

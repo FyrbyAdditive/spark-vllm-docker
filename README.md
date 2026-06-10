@@ -142,6 +142,41 @@ For periodic maintenance, I recommend using a filter: `docker builder prune --fi
 
 ## CHANGELOG
 
+### 2026-06-10
+
+#### Step-3.7-Flash-NVFP4 performance recipes for 2x DGX Spark (GB10 / sm_121)
+
+Added two recipes for serving [`stepfun-ai/Step-3.7-Flash-NVFP4`](https://huggingface.co/stepfun-ai/Step-3.7-Flash-NVFP4) on a two-node GB10 cluster, both validated end-to-end with `vllm bench serve` against the canonical Spec-Bench dataset (480 real prompts across 13 categories) using `vllm-node:latest` (vLLM 0.22.1rc1.dev124+gace95c9cf):
+
+- **`step-3.7-flash-jasl-gb10`** (default for chat/code workloads): R1 throughput tunings + MTP-3 speculative decoding. **+16.7% single-stream tok/s** vs the throughput variant; ~50% MTP draft acceptance (~2.5 tokens/step) on real prompts. The MTP fix is from [eugr/spark-vllm-docker#268](https://github.com/eugr/spark-vllm-docker/pull/268) (`feat: Step-3.7-Flash NVFP4 + MTP speculative decoding` by @choiceoh), packaged here as `mods/step-3.7-flash-mtp-unquant/` so it always applies even when the parent `mods/step-3.7-flash` self-skips on already-supported vLLM builds.
+- **`step-3.7-flash-jasl-gb10-throughput`** (for many concurrent users): same R1 tunings, no MTP. Spec-Bench output tok/s within 3% of the canonical at C=8, with ~50% lower TTFT — better for multi-user shared endpoints.
+
+##### Performance settings baked into the canonical recipe
+
+Validated on a 2x DGX Spark cluster via `vllm bench serve --dataset-name spec_bench`:
+
+| Setting | Result |
+| --- | --- |
+| `max_num_seqs: 8` (explicit cap; default is 256) | +5 GiB/rank KV pool, better TTFT, no throughput cost |
+| `max_num_batched_tokens: 8192` | clears the `max_num_scheduled_tokens=2048` warning under spec-decode |
+| `--served-model-name step-3.7-flash stepfun-ai/Step-3.7-Flash-NVFP4` | alias trick from `tonyd2wild/deepseek-v4-flash-dgx-spark` |
+| `--speculative-config '{"method":"mtp","num_speculative_tokens":3}'` | MTP-3; ~50% acceptance on Spec-Bench, per-position 78% / 48% / 26% |
+| `mods/step-3.7-flash-mtp-unquant` | patches vLLM to keep MTP `mtp_block` + `shared_head` unquantized on NVFP4 (without this the engine crashes with `RuntimeError: tensor a (2048) must match tensor b (4096)` because the BF16-grafted MTP weights collide with NVFP4 quant) |
+| `gpu_memory_utilization: 0.8` | tested 0.85, no throughput gain at our scale; kept conservative for host margin |
+
+Combined vs the throughput variant (Spec-Bench, real prompts): C=1 **+16.7%**, C=4 +4.4%, C=8 +3.0%.
+
+##### MTP weight grafting (legacy)
+
+eugr PR #268 also ships a `graft-step-3.7-mtp.sh` script that downloads BF16 MTP shards from `stepfun-ai/Step-3.7-Flash` and grafts them into the cached NVFP4 snapshot. Stepfun's current NVFP4 export already ships a `model-mtp-bf16.safetensors` shard, so the graft script is a **no-op against fresh snapshots** — but kept here for older cached snapshots that predate stepfun's MTP-shard ship.
+
+##### Knobs that did NOT pay off (documented so they're not re-tried)
+
+- `VLLM_USE_FLASHINFER_MOE_FP8` + `VLLM_FLASHINFER_ALLREDUCE_BACKEND=trtllm` — gave DSv4 +3-4% but no-op on Step-3.7-NVFP4 (different MoE quant path)
+- `gpu_memory_utilization: 0.85` — bought 44% bigger KV pool but no throughput change at our test scale; not worth tighter host margin
+
+See [`recipes/step-3.7-flash-jasl-gb10.bench.md`](recipes/step-3.7-flash-jasl-gb10.bench.md) for the full per-round bench data and methodology.
+
 ### 2026-05-28
 
 #### StepFun Step 3.7 Flash Support
