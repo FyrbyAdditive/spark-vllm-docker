@@ -1,0 +1,66 @@
+# Recipe: MiniMax-M2.7-AWQ on 2x DGX Spark (GB10 / sm_121)
+#
+# Canonical Spark recipe — takes eugr's minimax-m2.7-awq.yaml baseline and
+# layers the safe-default throughput tunings that proved robust in bench
+# testing. Full bench history in minimax-m2.7-jasl-gb10.bench.md.
+#
+# Key finding: unlike DSv4 / Step-3.7, MiniMax-M2.7-AWQ is NOT
+# concurrency-bound on this hardware — output tok/s is within ±3% of
+# baseline regardless of max_num_seqs / batched-tokens tuning, suggesting
+# it's memory-bandwidth bound on the AWQ-4 MoE expert reads. Only the
+# free TTFT-improving safe defaults are kept here.
+#
+# Knobs we tried that did NOT pay off (see bench.md):
+# - max_num_seqs 8 + max_num_batched_tokens 8192: throughput-neutral
+#   (±3% noise). KEPT in the recipe anyway because they don't hurt and
+#   future workloads may saturate the cap. R0 showed only 1.10x
+#   concurrency at full 192K context; the cap is real but doesn't bind
+#   at our test workload.
+# - --kv-cache-dtype fp8 + --block-size 256: CRASHED at C=8 with
+#   `TimeoutError: RPC call to sample_tokens timed out` after ~10 min
+#   of sustained traffic. C=1/C=4 were throughput-neutral, so no
+#   measurable benefit and a real reliability cost. DROPPED.
+# - gpu_memory_utilization 0.85: skipped (not KV-bound).
+# - Marlin kernel: vLLM auto-selects MarlinLinearKernel +
+#   CompressedTensorsWNA16MarlinMoEMethod (verified in launch log). No
+#   --quantization override needed.
+
+recipe_version: "1"
+name: MiniMax-M2.7-AWQ-jasl-GB10
+description: vLLM serving cyankiwi/MiniMax-M2.7-AWQ-4bit on two GB10 DGX Sparks (Spark-tuned)
+
+model: cyankiwi/MiniMax-M2.7-AWQ-4bit
+container: vllm-node
+cluster_only: true
+
+mods: []
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.8
+  max_model_len: 196608
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+
+env: {}
+
+command: |
+  vllm serve cyankiwi/MiniMax-M2.7-AWQ-4bit \
+      --trust-remote-code \
+      --port {port} \
+      --host {host} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      -tp {tensor_parallel} \
+      --distributed-executor-backend ray \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --load-format fastsafetensors \
+      --enable-prefix-caching \
+      --enable-flashinfer-autotune \
+      --enable-auto-tool-choice \
+      --tool-call-parser minimax_m2 \
+      --reasoning-parser minimax_m2 \
+      --served-model-name minimax-m2.7 cyankiwi/MiniMax-M2.7-AWQ-4bit

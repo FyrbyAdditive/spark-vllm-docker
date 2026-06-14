@@ -1,0 +1,272 @@
+=== R0 BASELINE: random + spec_bench, C=1/4/8 ===
+model alias check:
+['cyankiwi/MiniMax-M2.7-AWQ-4bit']
+
+
+==================== R0 random C=1 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xea9833b3f6a0>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=256, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-a658d103-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:22:04 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:22:06 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:22:06 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:22:06 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:22:08 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:22:08 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:22:09 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:22:11 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+INFO 06-14 11:22:11 [utils.py:90] Sampling input_len from [1024, 1024] and output_len from [256, 256]
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  220.72    
+Total input tokens:                      32768     
+Total generated tokens:                  8192      
+Request throughput (req/s):              0.14      
+Output token throughput (tok/s):         37.11     
+Peak output token throughput (tok/s):    41.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          185.57    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          480.79    
+Median TTFT (ms):                        478.61    
+P99 TTFT (ms):                           500.86    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          25.16     
+Median TPOT (ms):                        25.11     
+P99 TPOT (ms):                           25.70     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           25.16     
+Median ITL (ms):                         25.01     
+P99 ITL (ms):                            28.68     
+==================================================
+
+==================== R0 random C=4 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xfb13fb66af20>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=256, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-9ff8ed46-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:25:57 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:25:59 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:25:59 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:25:59 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:26:01 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:26:01 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:26:02 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:26:04 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+INFO 06-14 11:26:04 [utils.py:90] Sampling input_len from [1024, 1024] and output_len from [256, 256]
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  105.35    
+Total input tokens:                      32768     
+Total generated tokens:                  8192      
+Request throughput (req/s):              0.30      
+Output token throughput (tok/s):         77.76     
+Peak output token throughput (tok/s):    84.00     
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          388.81    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          298.53    
+Median TTFT (ms):                        266.12    
+P99 TTFT (ms):                           452.80    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          50.45     
+Median TPOT (ms):                        50.46     
+P99 TPOT (ms):                           51.20     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           50.45     
+Median ITL (ms):                         50.33     
+P99 ITL (ms):                            52.86     
+==================================================
+
+==================== R0 random C=8 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xf673c99def20>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=256, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=8, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-57875e97-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:27:54 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:27:56 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:27:56 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:27:56 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:27:58 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:27:58 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:27:59 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:28:01 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+INFO 06-14 11:28:01 [utils.py:90] Sampling input_len from [1024, 1024] and output_len from [256, 256]
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 8
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             8         
+Benchmark duration (s):                  80.83     
+Total input tokens:                      32768     
+Total generated tokens:                  8192      
+Request throughput (req/s):              0.40      
+Output token throughput (tok/s):         101.34    
+Peak output token throughput (tok/s):    112.00    
+Peak concurrent requests:                16.00     
+Total token throughput (tok/s):          506.72    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          441.17    
+Median TTFT (ms):                        460.79    
+P99 TTFT (ms):                           487.82    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          77.50     
+Median TPOT (ms):                        77.42     
+P99 TPOT (ms):                           78.19     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           77.50     
+Median ITL (ms):                         77.77     
+P99 ITL (ms):                            81.76     
+==================================================
+
+==================== R0 spec_bench C=1 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xf2decb0faf20>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='spec_bench', no_stream=False, dataset_path='/root/datasets/specbench-question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-397c4cfb-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:29:26 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:29:28 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:29:28 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:29:28 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:29:30 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:29:30 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:29:31 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:29:33 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  201.30    
+Total input tokens:                      8381      
+Total generated tokens:                  7824      
+Request throughput (req/s):              0.16      
+Output token throughput (tok/s):         38.87     
+Peak output token throughput (tok/s):    42.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          80.50     
+---------------Time to First Token----------------
+Mean TTFT (ms):                          304.00    
+Median TTFT (ms):                        277.10    
+P99 TTFT (ms):                           560.25    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          24.58     
+Median TPOT (ms):                        24.47     
+P99 TPOT (ms):                           25.37     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           24.59     
+Median ITL (ms):                         24.49     
+P99 ITL (ms):                            26.21     
+==================================================
+
+==================== R0 spec_bench C=4 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xe9940889af20>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='spec_bench', no_stream=False, dataset_path='/root/datasets/specbench-question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-e412f413-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:32:59 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:33:01 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:33:01 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:33:01 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:33:03 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:33:03 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:33:04 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:33:06 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  100.31    
+Total input tokens:                      8381      
+Total generated tokens:                  7798      
+Request throughput (req/s):              0.32      
+Output token throughput (tok/s):         77.74     
+Peak output token throughput (tok/s):    88.00     
+Peak concurrent requests:                6.00      
+Total token throughput (tok/s):          161.29    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          252.83    
+Median TTFT (ms):                        241.81    
+P99 TTFT (ms):                           388.34    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          48.82     
+Median TPOT (ms):                        49.23     
+P99 TPOT (ms):                           50.08     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           48.82     
+Median ITL (ms):                         48.40     
+P99 ITL (ms):                            70.14     
+==================================================
+
+==================== R0 spec_bench C=8 ====================
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0xf8965464af20>, trust_remote_code=False, seed=0, num_prompts=32, dataset_name='spec_bench', no_stream=False, dataset_path='/root/datasets/specbench-question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='https://magi.fyrby.internal:8000', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=8, model='cyankiwi/MiniMax-M2.7-AWQ-4bit', input_len=None, output_len=None, tokenizer=None, tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=False, self_timed=None, percentile_metrics=None, metric_percentiles='99', goodput=None, request_id_prefix='bench-f334e0a6-', top_p=None, top_k=None, min_p=None, temperature=None, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False)
+ERROR 06-14 11:34:51 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:34:53 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:34:53 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:34:53 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:34:55 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+ERROR 06-14 11:34:55 [repo_utils.py:131] Error retrieving file list. Please ensure your `model_name_or_path``repo_type`, `token` and `revision` arguments are correctly set. Returning an empty list.
+ERROR 06-14 11:34:56 [repo_utils.py:68] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000), retrying 1 of 2
+ERROR 06-14 11:34:58 [repo_utils.py:66] Error retrieving file list: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)
+WARNING: vllm bench serve no longer sets temperature==0 (greedy) in requests by default. The default will be determined on the server side and can be model/API specific. For the old behavior, include --temperature=0.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 8
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             8         
+Benchmark duration (s):                  76.01     
+Total input tokens:                      8381      
+Total generated tokens:                  8002      
+Request throughput (req/s):              0.42      
+Output token throughput (tok/s):         105.27    
+Peak output token throughput (tok/s):    113.00    
+Peak concurrent requests:                14.00     
+Total token throughput (tok/s):          215.53    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          304.18    
+Median TTFT (ms):                        315.46    
+P99 TTFT (ms):                           406.77    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          73.64     
+Median TPOT (ms):                        74.47     
+P99 TPOT (ms):                           75.52     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           73.65     
+Median ITL (ms):                         73.79     
+P99 ITL (ms):                            79.25     
+==================================================
+==== R0 DONE ====

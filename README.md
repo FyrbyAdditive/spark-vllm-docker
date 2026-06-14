@@ -142,6 +142,32 @@ For periodic maintenance, I recommend using a filter: `docker builder prune --fi
 
 ## CHANGELOG
 
+### 2026-06-14
+
+#### MiniMax-M2.7-AWQ performance recipe for 2x DGX Spark (GB10 / sm_121)
+
+Added [`recipes/minimax-m2.7-jasl-gb10.yaml`](recipes/minimax-m2.7-jasl-gb10.yaml), a Spark-tuned variant of eugr's `minimax-m2.7-awq.yaml` validated end-to-end with `vllm bench serve` (random ISL 1024 / OSL 256 and Spec-Bench dataset, 32 prompts each, C=1/4/8) on the eugr `vllm-node:latest` image.
+
+Key finding: unlike DSv4 / Step-3.7, **MiniMax-M2.7-AWQ is not concurrency-bound** on a 2-node GB10 cluster. The DSv4-style `max_num_seqs` + `max_num_batched_tokens` tuning is throughput-neutral (±3% noise) — this workload appears memory-bandwidth bound on the AWQ-4 MoE expert reads. The canonical recipe therefore ships a minimal set of safe defaults that pay off in TTFT (11–17% faster on real prompts via prefix-caching + flashinfer-autotune) rather than throughput.
+
+##### Settings baked into the canonical recipe
+
+| Setting | Result |
+| --- | --- |
+| `max_num_seqs: 8` + `max_num_batched_tokens: 8192` | throughput-neutral at our test scale (±3% noise) — kept for future-proofing if a workload saturates the cap |
+| `--enable-prefix-caching` | 11–17% TTFT improvement on Spec-Bench at C≥4 |
+| `--enable-flashinfer-autotune` | small steady-state win + co-pays with prefix-caching |
+| `--served-model-name minimax-m2.7 cyankiwi/MiniMax-M2.7-AWQ-4bit` | zero-downtime client swap |
+
+##### Knobs that did NOT pay off (documented so they're not re-tried)
+
+- **`--kv-cache-dtype fp8` + `--block-size 256`**: throughput-neutral at C=1/4, **crashed the engine at C=8** with a multi-node Ray RPC timeout (`TimeoutError: RPC call to sample_tokens timed out`). Engine died, container shut down. KV headroom benefit (2.3× pool) is irrelevant at our concurrency. **Dropped** — reliability hit with no measurable benefit.
+- **`gpu_memory_utilization: 0.85`**: not KV-bound at this test scale; larger pool is dead capacity. Skipped (DSv4 saw the same conclusion).
+- **MTP / Eagle3 spec-decode**: `MiniMaxM2ForCausalLM` inherits `SupportsEagle3` but no Eagle3 draft model has been published for the AWQ variant. Out of scope.
+- **`--quantization awq_marlin` override**: not needed — vLLM auto-selects `MarlinLinearKernel` + `CompressedTensorsWNA16MarlinMoEMethod` on both ranks.
+
+See [`recipes/minimax-m2.7-jasl-gb10.bench.md`](recipes/minimax-m2.7-jasl-gb10.bench.md) for the full per-round bench data and methodology.
+
 ### 2026-06-10
 
 #### DiffusionGemma Recipes and Mod
